@@ -34,8 +34,8 @@ const loginUser = async (req, res, next) => {
                 const token = createJwtToken(dbUser._id);
                 res.cookie("token", token, {
                     httpOnly: true,          // Prevent access from JavaScript (secure)
-                    secure: false,           // Set to true if using HTTPS
-                    sameSite: "Lax",         // Helps prevent CSRF
+                    secure: true,           // Set to true if using HTTPS
+                    sameSite: "none",         // Helps prevent CSRF
                     maxAge: 24 * 60 * 60 * 1000, // 1 day
                 });
                 res.json({ success: "Logged in successfully!" });
@@ -53,9 +53,10 @@ const logoutUser = async (req, res, next) => {
         const userId = getTokenData(req, next);
         await User.findByIdAndUpdate(userId, { isOnline: false });
         res.clearCookie("token", {
-            httpOnly: true,
-            secure: false, // set to true in production with HTTPS
-            sameSite: "Lax", // or "None" if cross-site
+            httpOnly: true,          // Prevent access from JavaScript (secure)
+            secure: true,           // Set to true if using HTTPS
+            sameSite: "none",         // Helps prevent CSRF
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
         res.json({ success: "Logged out successfully" });
     } catch (error) {
