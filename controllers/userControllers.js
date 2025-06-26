@@ -12,8 +12,8 @@ const registerUser = async (req, res, next) => {
         const token = createJwtToken(newUser._id);
         res.cookie("token", token, {
             httpOnly: true,          // Prevent access from JavaScript (secure)
-            secure: false,           // Set to true if using HTTPS
-            sameSite: "Lax",         // Helps prevent CSRF
+            secure: true,           // Set to true if using HTTPS
+            sameSite: "none",         // Helps prevent CSRF
             maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
         res.json({ success: "User Accout Has been created Successfully! Welcome" });
